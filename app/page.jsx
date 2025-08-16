@@ -33,7 +33,7 @@ export default function LandingPage() {
           <nav className="hidden md:flex gap-6 text-sm text-gray-700">
             <a href="#about" className="hover:text-gray-900">About</a>
             <a href="#services" className="hover:text-gray-900">Services</a>
-            <a href="#work" className="hover:text-gray-900">Selected Work</a>
+            <a href="#work" className="hover:text-gray-900">Recent Work</a>
             <a href="#engagement" className="hover:text-gray-900">Engagement</a>
             <a href="#contact" className="hover:text-gray-900">Contact</a>
           </nav>
@@ -63,7 +63,7 @@ export default function LandingPage() {
       <section id="about" className="bg-gray-50 border-b border-gray-100">
         <div className="mx-auto max-w-6xl px-4 py-16 grid md:grid-cols-3 gap-10 items-start">
           <div>
-            <h2 className="text-2xl md:text-3xl font-semibold">about</h2>
+            <h2 className="text-2xl md:text-3xl font-semibold">About</h2>
             {/*<p className="mt-2 text-gray-600 text-sm">Strategy-first with hands-on execution</p>*/}
             <img src="/IMG_6640-2.png" alt="Kevin Deevey portrait" className="mt-6 rounded-xl shadow-md" />
           </div>
@@ -81,7 +81,7 @@ export default function LandingPage() {
       {/* Services */}
       <section id="services" className="bg-white border-b border-gray-100">
         <div className="mx-auto max-w-6xl px-4 py-16">
-          <h2 className="text-2xl md:text-3xl font-semibold">services</h2>
+          <h2 className="text-2xl md:text-3xl font-semibold">Services</h2>
           <div className="mt-6 grid md:grid-cols-3 gap-5">
             <div className="rounded-2xl border border-gray-200 bg-gray-50 p-5 shadow-sm">
               <h3 className="text-lg font-medium">Design Strategy</h3>
@@ -102,9 +102,9 @@ export default function LandingPage() {
       {/* Selected Work */}
 <section id="work" className="bg-gray-50 border-b border-gray-100">
   <div className="mx-auto max-w-6xl px-4 py-16">
-    <h2 className="text-2xl md:text-3xl font-semibold">Selected Work</h2>
+    <h2 className="text-2xl md:text-3xl font-semibold">Most Recent Work</h2>
     <p className="mt-4 text-gray-700 max-w-3xl">
-      A showcase of key projects and engagements that highlight my approach to design strategy, leadership, and delivery.
+      A showcase of recent projects and engagements that highlight my approach to design strategy, leadership, and delivery.
     </p>
 
     <div className="mt-8 grid md:grid-cols-2 gap-6">
@@ -169,7 +169,7 @@ export default function LandingPage() {
       {/* Engagement Models */}
       <section id="engagement" className="bg-white border-b border-gray-100">
         <div className="mx-auto max-w-6xl px-4 py-16">
-          <h2 className="text-2xl md:text-3xl font-semibold">engagement models</h2>
+          <h2 className="text-2xl md:text-3xl font-semibold">Engagement Models</h2>
           <div className="mt-6 grid md:grid-cols-3 gap-5">
             <div className="rounded-2xl border border-gray-200 bg-gray-50 p-5 shadow-sm">
               <h3 className="text-lg font-medium">Consulting</h3>
@@ -249,14 +249,14 @@ export default function LandingPage() {
     
     {/* Contact Info */}
     <div className="flex flex-col md:flex-row md:items-center gap-2">
-      <span>📞 <a href="tel:+11234567890" className="hover:text-gray-900">+1 (123) 456-7890</a></span>
-      <span>✉️ <a href="mailto:kevin@example.com" className="hover:text-gray-900">kevin@example.com</a></span>
+      <span>📞 <a href="tel:+11234567890" className="hover:text-gray-900">+1 (613) 797-5689</a></span>
+      <span>✉️ <a href="mailto:kevin@kevindeeveyarchitect.com" className="hover:text-gray-900">kevin@kevindeeveyarchitect.com</a></span>
     </div>
 
     {/* Navigation Links */}
     <nav className="flex gap-4">
       <a href="#services" className="hover:text-gray-900">Services</a>
-      <a href="#work" className="hover:text-gray-900">Work</a>
+      <a href="#work" className="hover:text-gray-900">Recent Work</a>
       <a href="#engagement" className="hover:text-gray-900">Engagement</a>
       <a href="#contact" className="hover:text-gray-900">Contact</a>
     </nav>
@@ -264,7 +264,7 @@ export default function LandingPage() {
     {/* Social Icons */}
     <div className="flex items-center gap-3">
       <a
-        href="https://www.linkedin.com/in/yourlinkedinprofile"
+        href="https://www.linkedin.com/in/kevin-deevey-4620721/"
         target="_blank"
         rel="noopener noreferrer"
         className="text-gray-600 hover:text-gray-900"
