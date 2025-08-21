@@ -128,9 +128,9 @@ export default function LandingPage() {
             Led a multi-year UX transformation of the MyActiveHealth platform, modernizing the experience, integrating behavioral design, and aligning
             with engagement goals across mobile and web.
           </p>
-          <a href="#" className="inline-block mt-4 text-sm font-medium text-gray-900 hover:underline">
+          {/*<a href="#" className="inline-block mt-4 text-sm font-medium text-gray-900 hover:underline">
             Read more →
-          </a>
+          </a>*/}
         </div>
       </article>
 
@@ -154,9 +154,9 @@ export default function LandingPage() {
             Year-long service design engagement delivering a modernized Civil Commercial court design; optimized workflows for counsel, coordinators,
             clerks, and judicial assistants following an intensive systems audit.
           </p>
-          <a href="#" className="inline-block mt-4 text-sm font-medium text-gray-900 hover:underline">
+          {/*<a href="#" className="inline-block mt-4 text-sm font-medium text-gray-900 hover:underline">
             Read more →
-          </a>
+          </a>*/}
         </div>
       </article>
     </div>
