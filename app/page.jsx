@@ -1,6 +1,104 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+
+
+export function ContactForm() {
+  const [status, setStatus] = useState({ state: 'idle', message: '' });
+  const [form, setForm] = useState({ name: '', email: '', message: '', company: '' }); // company = honeypot
+
+  const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (form.company) return; // bot honeypot
+
+    setStatus({ state: 'submitting', message: '' });
+
+    try {
+      const res = await fetch('https://formspree.io/f/xandwzkp', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: new FormData(e.currentTarget),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setStatus({ state: 'success', message: 'Thanks! I’ll get back to you shortly.' });
+        setForm({ name: '', email: '', message: '', company: '' });
+      } else {
+        throw new Error(data?.errors?.[0]?.message || 'Something went wrong.');
+      }
+    } catch (err) {
+      setStatus({ state: 'error', message: err.message || 'Submission failed.' });
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="grid gap-3 mt-8 max-w-2xl">
+      {/* Honeypot for bots (hidden) */}
+      <label className="sr-only">Company
+        <input type="text" name="company" value={form.company} onChange={onChange} tabIndex={-1} autoComplete="off" className="hidden" />
+      </label>
+
+      <label className="text-sm">Name
+        <input
+          name="name"
+          required
+          value={form.name}
+          onChange={onChange}
+          className="mt-1 w-full rounded-xl bg-white border border-gray-300 px-3 py-2"
+          placeholder="Your name"
+        />
+      </label>
+
+      <label className="text-sm">Email
+        <input
+          type="email"
+          name="email"
+          required
+          value={form.email}
+          onChange={onChange}
+          className="mt-1 w-full rounded-xl bg-white border border-gray-300 px-3 py-2"
+          placeholder="you@company.com"
+        />
+      </label>
+
+      <label className="text-sm">How can I help?
+        <textarea
+          name="message"
+          required
+          rows={5}
+          value={form.message}
+          onChange={onChange}
+          className="mt-1 w-full rounded-xl bg-white border border-gray-300 px-3 py-2"
+          placeholder="Briefly describe your needs"
+        />
+      </label>
+
+      <button
+        type="submit"
+        disabled={status.state === 'submitting'}
+        className="mt-2 rounded-2xl px-5 py-3 bg-gray-900 text-white font-medium hover:bg-gray-700 disabled:opacity-60"
+      >
+        {status.state === 'submitting' ? 'Sending…' : 'Send message'}
+      </button>
+
+      {status.state === 'success' && (
+        <p className="text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
+          {status.message}
+        </p>
+      )}
+      {status.state === 'error' && (
+        <p className="text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+          {status.message}
+        </p>
+      )}
+    </form>
+  );
+}
 // if you already import React, just add useEffect and useState
+
+
 
 export default function LandingPage() {
   const [lightbox, setLightbox] = useState({ open: false, src: '', alt: '' });
@@ -230,7 +328,7 @@ export default function LandingPage() {
 )}
 
 
-      {/* Contact */}
+      {/* Contact 
       <section id="contact" className="bg-gray-50">
         <div className="mx-auto max-w-6xl px-4 py-16">
           <h2 className="text-2xl md:text-3xl font-semibold">contact</h2>
@@ -241,7 +339,16 @@ export default function LandingPage() {
             <button type="submit" className="rounded-2xl px-5 py-3 bg-gray-900 text-white font-medium hover:bg-gray-700">Send Message</button>
           </form>
         </div>
-      </section>
+      </section>*/}
+
+      {/* Contact */}
+<section id="contact" className="bg-gray-50">
+  <div className="mx-auto max-w-6xl px-4 py-16">
+    <h2 className="text-2xl md:text-3xl font-semibold">Contact</h2>
+
+    <ContactForm />
+  </div>
+</section>
 
       {/* Footer */}
 <footer className="border-t border-gray-100">
