@@ -1,11 +1,19 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 
+/* ---------- Utilities ---------- */
+function useEscToClose(cb) {
+  useEffect(() => {
+    const onKey = (e) => e.key === "Escape" && cb();
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [cb]);
+}
 
+/* ---------- Contact Form ---------- */
 export function ContactForm() {
   const [status, setStatus] = useState({ state: 'idle', message: '' });
   const [form, setForm] = useState({ name: '', email: '', message: '', company: '' }); // company = honeypot
-
   const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
@@ -96,29 +104,27 @@ export function ContactForm() {
     </form>
   );
 }
-// if you already import React, just add useEffect and useState
 
-
-
+/* ---------- Page ---------- */
 export default function LandingPage() {
+  /* Image lightbox (for thumbnails) */
   const [lightbox, setLightbox] = useState({ open: false, src: '', alt: '' });
-
-  // Close on ESC
   useEffect(() => {
     const onKey = (e) => e.key === 'Escape' && setLightbox({ open: false, src: '', alt: '' });
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
-
   const openLightbox = (src, alt) => setLightbox({ open: true, src, alt });
   const closeLightbox = () => setLightbox({ open: false, src: '', alt: '' });
 
-
-  
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    window.location.href = 'mailto:kevin@kevindeeveyarchitect.com';
-  };
+  /* “Read more” Project modal */
+  const [projectModal, setProjectModal] = useState({ open: false, title: '', content: null });
+  const closeProjectModal = () => setProjectModal({ open: false, title: '', content: null });
+  useEscToClose(closeProjectModal);
+  const closeBtnRef = useRef(null);
+  useEffect(() => {
+    if (projectModal.open && closeBtnRef.current) closeBtnRef.current.focus();
+  }, [projectModal.open]);
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
@@ -162,7 +168,6 @@ export default function LandingPage() {
         <div className="mx-auto max-w-6xl px-4 py-16 grid md:grid-cols-3 gap-10 items-start">
           <div>
             <h2 className="text-2xl md:text-3xl font-semibold">About</h2>
-            {/*<p className="mt-2 text-gray-600 text-sm">Strategy-first with hands-on execution</p>*/}
             <img src="/IMG_6640-2.png" alt="Kevin Deevey portrait" className="mt-6 rounded-xl shadow-md" />
           </div>
           <div className="md:col-span-2 leading-relaxed space-y-4 text-gray-800">
@@ -198,71 +203,125 @@ export default function LandingPage() {
       </section>
 
       {/* Selected Work */}
-<section id="work" className="bg-gray-50 border-b border-gray-100">
-  <div className="mx-auto max-w-6xl px-4 py-16">
-    <h2 className="text-2xl md:text-3xl font-semibold">Most Recent Work</h2>
-    <p className="mt-4 text-gray-700 max-w-3xl">
-      A showcase of recent projects and engagements that highlight my approach to design strategy, leadership, and delivery.
+      <section id="work" className="bg-gray-50 border-b border-gray-100">
+        <div className="mx-auto max-w-6xl px-4 py-16">
+          <h2 className="text-2xl md:text-3xl font-semibold">Most Recent Work</h2>
+          <p className="mt-4 text-gray-700 max-w-3xl">
+            A showcase of recent projects and engagements that highlight my approach to design strategy, leadership, and delivery.
+          </p>
+
+          <div className="mt-8 grid md:grid-cols-2 gap-6">
+            {/* CVS Healthspire */}
+            <article className="rounded-2xl border border-gray-200 bg-white shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+              <button
+                type="button"
+                onClick={() => openLightbox('/CVS-thumb.png', 'CVS Healthspire — MyActiveHealth')}
+                className="w-full"
+                aria-label="Open CVS Healthspire thumbnail in lightbox"
+              >
+                <img
+                  src="/CVS-thumb.png"
+                  alt="CVS Healthspire project thumbnail"
+                  className="w-full h-56 object-cover cursor-zoom-in"
+                />
+              </button>
+              <div className="p-6">
+                <h3 className="text-lg font-medium">CVS Healthspire — MyActiveHealth Platform</h3>
+                <p className="mt-3 text-sm text-gray-700">
+                  Led a multi-year UX transformation of the MyActiveHealth platform, modernizing the experience, integrating behavioral design, and aligning
+                  with engagement goals across mobile and web.
+                </p>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setProjectModal({
+                      open: true,
+                      title: "CVS Healthspire — MyActiveHealth Platform",
+                      content: (
+  <div className="space-y-3 text-sm text-gray-800">
+    <p>
+      From 2022 to mid-2025, I served as Design Strategist for ActiveHealth Management, a CVS Healthspire company, leading a multi-year initiative to reimagine the MyActiveHealth platform. This engagement combined deep discovery, iterative design, and behavioral science to deliver a modern, mobile-first experience that drives member engagement and supports better health outcomes.
     </p>
-
-    <div className="mt-8 grid md:grid-cols-2 gap-6">
-      {/* CVS Healthspire */}
-      <article className="rounded-2xl border border-gray-200 bg-white shadow-sm hover:shadow-md transition-shadow overflow-hidden">
-        <button
-          type="button"
-          onClick={() => openLightbox('/CVS-thumb.png', 'CVS Healthspire — MyActiveHealth')}
-          className="w-full"
-          aria-label="Open CVS Healthspire thumbnail in lightbox"
-        >
-          <img
-            src="/CVS-thumb.png"
-            alt="CVS Healthspire project thumbnail"
-            className="w-full h-56 object-cover cursor-zoom-in"
-          />
-        </button>
-        <div className="p-6">
-          <h3 className="text-lg font-medium">CVS Healthspire — MyActiveHealth Platform</h3>
-          <p className="mt-3 text-sm text-gray-700">
-            Led a multi-year UX transformation of the MyActiveHealth platform, modernizing the experience, integrating behavioral design, and aligning
-            with engagement goals across mobile and web.
-          </p>
-          {/*<a href="#" className="inline-block mt-4 text-sm font-medium text-gray-900 hover:underline">
-            Read more →
-          </a>*/}
-        </div>
-      </article>
-
-      {/* Alberta Courts */}
-      <article className="rounded-2xl border border-gray-200 bg-white shadow-sm hover:shadow-md transition-shadow overflow-hidden">
-        <button
-          type="button"
-          onClick={() => openLightbox('/alberta-thumb.png', 'Alberta Courts — Court of King’s Bench')}
-          className="w-full"
-          aria-label="Open Alberta Courts thumbnail in lightbox"
-        >
-          <img
-            src="/alberta-thumb.png"
-            alt="Alberta Courts project thumbnail"
-            className="w-full h-56 object-cover cursor-zoom-in"
-          />
-        </button>
-        <div className="p-6">
-          <h3 className="text-lg font-medium">Alberta Courts — Court of King’s Bench</h3>
-          <p className="mt-3 text-sm text-gray-700">
-            Year-long service design engagement delivering a modernized Civil Commercial court design; optimized workflows for counsel, coordinators,
-            clerks, and judicial assistants following an intensive systems audit.
-          </p>
-          {/*<a href="#" className="inline-block mt-4 text-sm font-medium text-gray-900 hover:underline">
-            Read more →
-          </a>*/}
-        </div>
-      </article>
+    <p>
+      I helped shape a behaviorally informed UX strategy, executed a full design system overhaul, and delivered dozens of end-to-end feature designs—from onboarding flows and daily engagement tools to complex coaching integrations and B2C experimentation. At the conclusion of the engagement, I played a key change management role—facilitating the transition from legacy vendors to a scalable in-house design capability, mentoring new team members, and ensuring knowledge transfer for sustained success.
+    </p>
+    <div>
+      <p className="font-medium text-gray-900">Key initiatives included:</p>
+      <ul className="list-disc list-inside space-y-1 text-gray-700">
+        <li>Signal mental health integration</li>
+        <li>LCC/Epic redesign</li>
+        <li>MEP Lite platform</li>
+        <li>Social enablement solutions</li>
+      </ul>
     </div>
+    <p>
+      Our team earned multiple organizational awards and individual recognition for excellence during PI cycles.
+    </p>
+    <p>
+      Throughout, I worked at the intersection of user needs, business goals, and technical constraints—ensuring that design decisions were evidence-based, strategically aligned, and operationally feasible. The result: a modernized platform positioned for long-term growth and member impact.
+    </p>
   </div>
-</section>
+)
+,
+                    })
+                  }
+                  className="inline-block mt-4 text-sm font-medium text-gray-900 hover:underline"
+                >
+                  Read more →
+                </button>
+              </div>
+            </article>
 
-
-
+            {/* Alberta Courts */}
+            <article className="rounded-2xl border border-gray-200 bg-white shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+              <button
+                type="button"
+                onClick={() => openLightbox('/alberta-thumb.png', 'Alberta Courts — Court of King’s Bench')}
+                className="w-full"
+                aria-label="Open Alberta Courts thumbnail in lightbox"
+              >
+                <img
+                  src="/alberta-thumb.png"
+                  alt="Alberta Courts project thumbnail"
+                  className="w-full h-56 object-cover cursor-zoom-in"
+                />
+              </button>
+              <div className="p-6">
+                <h3 className="text-lg font-medium">Alberta Courts — Court of King’s Bench</h3>
+                <p className="mt-3 text-sm text-gray-700">
+                  Year-long service design engagement delivering a modernized Civil Commercial court design; optimized workflows for counsel, coordinators,
+                  clerks, and judicial assistants following an intensive systems audit.
+                </p>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setProjectModal({
+                      open: true,
+                      title: "Alberta Courts — Court of King’s Bench",
+                      content: (
+                        <div className="space-y-3 text-sm text-gray-800">
+                          <p>
+                            Modernization strategy and service blueprint to streamline scheduling, filings, and request processing across roles and systems.
+                          </p>
+                          <ul className="list-disc list-inside space-y-1 text-gray-700">
+                            <li>End-to-end systems audit & service blueprint</li>
+                            <li>Common dashboard concept & prioritized flows</li>
+                            <li>Booking, filing, and submission redesign</li>
+                            <li>Operational playbook & change enablement</li>
+                          </ul>
+                        </div>
+                      ),
+                    })
+                  }
+                  className="inline-block mt-4 text-sm font-medium text-gray-900 hover:underline"
+                >
+                  Read more →
+                </button>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
 
       {/* Engagement Models */}
       <section id="engagement" className="bg-white border-b border-gray-100">
@@ -297,100 +356,118 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Lightbox */}
-{lightbox.open && (
-  <div
-    className="fixed inset-0 z-[100] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4"
-    role="dialog"
-    aria-modal="true"
-    aria-label={lightbox.alt || 'Image preview'}
-    onClick={closeLightbox}
-  >
-    <div
-      className="relative max-w-[90vw] max-h-[85vh]"
-      onClick={(e) => e.stopPropagation()} // prevent backdrop close when clicking image/container
-    >
-      <button
-        type="button"
-        onClick={closeLightbox}
-        className="absolute -top-10 right-0 text-white/90 hover:text-white text-sm font-medium underline"
-        aria-label="Close image preview"
-      >
-        Close (Esc)
-      </button>
-      <img
-        src={lightbox.src}
-        alt={lightbox.alt || ''}
-        className="max-h-[85vh] max-w-[90vw] rounded-xl shadow-2xl"
-      />
-    </div>
-  </div>
-)}
-
-
-      {/* Contact 
-      <section id="contact" className="bg-gray-50">
-        <div className="mx-auto max-w-6xl px-4 py-16">
-          <h2 className="text-2xl md:text-3xl font-semibold">contact</h2>
-          <form className="grid gap-3 mt-8" onSubmit={handleSubmit}>
-            <input type="text" placeholder="Your name" className="border border-gray-300 rounded-lg px-4 py-3 text-sm" required />
-            <input type="email" placeholder="Your email" className="border border-gray-300 rounded-lg px-4 py-3 text-sm" required />
-            <textarea placeholder="Your message" className="border border-gray-300 rounded-lg px-4 py-3 text-sm" rows="5" required></textarea>
-            <button type="submit" className="rounded-2xl px-5 py-3 bg-gray-900 text-white font-medium hover:bg-gray-700">Send Message</button>
-          </form>
+      {/* Image Lightbox (thumbnails) */}
+      {lightbox.open && (
+        <div
+          className="fixed inset-0 z-[100] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label={lightbox.alt || 'Image preview'}
+          onClick={closeLightbox}
+        >
+          <div
+            className="relative max-w-[90vw] max-h-[85vh]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={closeLightbox}
+              className="absolute -top-10 right-0 text-white/90 hover:text-white text-sm font-medium underline"
+              aria-label="Close image preview"
+            >
+              Close (Esc)
+            </button>
+            <img
+              src={lightbox.src}
+              alt={lightbox.alt || ''}
+              className="max-h-[85vh] max-w-[90vw] rounded-xl shadow-2xl"
+            />
+          </div>
         </div>
-      </section>*/}
+      )}
+
+      {/* Project “Read more” Modal */}
+      {projectModal.open && (
+        <div
+          className="fixed inset-0 z-[110] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label={projectModal.title}
+          onClick={closeProjectModal}
+        >
+          <div
+            className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start justify-between gap-6">
+              <h3 className="text-lg md:text-xl font-semibold text-gray-900">
+                {projectModal.title}
+              </h3>
+              <button
+                ref={closeBtnRef}
+                type="button"
+                onClick={closeProjectModal}
+                className="text-sm text-gray-600 hover:text-gray-900 underline"
+                aria-label="Close details"
+              >
+                Close (Esc)
+              </button>
+            </div>
+
+            <div className="mt-4">{projectModal.content}</div>
+
+            <div className="mt-6 flex justify-end">
+              <button
+                type="button"
+                onClick={closeProjectModal}
+                className="rounded-xl border border-gray-300 px-4 py-2 text-sm hover:border-gray-600"
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Contact */}
-<section id="contact" className="bg-gray-50">
-  <div className="mx-auto max-w-6xl px-4 py-16">
-    <h2 className="text-2xl md:text-3xl font-semibold">Contact</h2>
-
-    <ContactForm />
-  </div>
-</section>
+      <section id="contact" className="bg-gray-50">
+        <div className="mx-auto max-w-6xl px-4 py-16">
+          <h2 className="text-2xl md:text-3xl font-semibold">Contact</h2>
+          <ContactForm />
+        </div>
+      </section>
 
       {/* Footer */}
-<footer className="border-t border-gray-100">
-  <div className="mx-auto max-w-6xl px-4 py-10 text-sm text-gray-600 flex flex-wrap items-center justify-between gap-4">
-    
-    {/* Contact Info */}
-    <div className="flex flex-col md:flex-row md:items-center gap-2">
-      <span>📞 <a href="tel:+11234567890" className="hover:text-gray-900">+1 (613) 797-5689</a></span>
-      <span>✉️ <a href="mailto:kevin@kevindeeveyarchitect.com" className="hover:text-gray-900">kevin@kevindeeveyarchitect.com</a></span>
-    </div>
-
-    {/* Navigation Links */}
-    <nav className="flex gap-4">
-      <a href="#services" className="hover:text-gray-900">Services</a>
-      <a href="#work" className="hover:text-gray-900">Recent Work</a>
-      <a href="#engagement" className="hover:text-gray-900">Engagement</a>
-      <a href="#contact" className="hover:text-gray-900">Contact</a>
-    </nav>
-
-    {/* Social Icons */}
-    <div className="flex items-center gap-3">
-      <a
-        href="https://www.linkedin.com/in/kevin-deevey-4620721/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-gray-600 hover:text-gray-900"
-        aria-label="LinkedIn"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          className="w-5 h-5"
-        >
-          <path d="M20.447 20.452h-3.554v-5.569c0-1.327-.025-3.037-1.852-3.037-1.853 0-2.136 1.446-2.136 2.939v5.667H9.351V9h3.414v1.561h.049c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.268 2.37 4.268 5.455v6.286zM5.337 7.433a2.062 2.062 0 110-4.124 2.062 2.062 0 010 4.124zM6.994 20.452H3.679V9h3.315v11.452z" />
-        </svg>
-      </a>
-    </div>
-
-  </div>
-</footer>
-
+      <footer className="border-t border-gray-100">
+        <div className="mx-auto max-w-6xl px-4 py-10 text-sm text-gray-600 flex flex-wrap items-center justify-between gap-4">
+          {/* Contact Info */}
+          <div className="flex flex-col md:flex-row md:items-center gap-2">
+            <span>📞 <a href="tel:+16137975689" className="hover:text-gray-900">+1 (613) 797-5689</a></span>
+            <span>✉️ <a href="mailto:kevin@kevindeeveyarchitect.com" className="hover:text-gray-900">kevin@kevindeeveyarchitect.com</a></span>
+          </div>
+          {/* Navigation Links */}
+          <nav className="flex gap-4">
+            <a href="#services" className="hover:text-gray-900">Services</a>
+            <a href="#work" className="hover:text-gray-900">Recent Work</a>
+            <a href="#engagement" className="hover:text-gray-900">Engagement</a>
+            <a href="#contact" className="hover:text-gray-900">Contact</a>
+          </nav>
+          {/* Social Icons */}
+          <div className="flex items-center gap-3">
+            <a
+              href="https://www.linkedin.com/in/kevin-deevey-4620721/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-600 hover:text-gray-900"
+              aria-label="LinkedIn"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.327-.025-3.037-1.852-3.037-1.853 0-2.136 1.446-2.136 2.939v5.667H9.351V9h3.414v1.561h.049c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.268 2.37 4.268 5.455v6.286zM5.337 7.433a2.062 2.062 0 110-4.124 2.062 2.062 0 010 4.124zM6.994 20.452H3.679V9h3.315v11.452z" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
