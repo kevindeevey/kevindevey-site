@@ -299,17 +299,41 @@ export default function LandingPage() {
                       open: true,
                       title: "Alberta Courts — Court of King’s Bench",
                       content: (
-                        <div className="space-y-3 text-sm text-gray-800">
-                          <p>
-                            Modernization strategy and service blueprint to streamline scheduling, filings, and request processing across roles and systems.
-                          </p>
-                          <ul className="list-disc list-inside space-y-1 text-gray-700">
-                            <li>End-to-end systems audit & service blueprint</li>
-                            <li>Common dashboard concept & prioritized flows</li>
-                            <li>Booking, filing, and submission redesign</li>
-                            <li>Operational playbook & change enablement</li>
-                          </ul>
-                        </div>
+                         <div className="space-y-3 text-sm text-gray-800">
+    {/* Thumbnail image at top with caption */}
+    <figure className="mb-4">
+      <img
+        src="/alberta-thumb.png"
+        alt="Alberta Courts case study thumbnail"
+        className="w-full h-48 object-cover rounded-lg shadow-md"
+      />
+      <figcaption className="mt-2 text-xs text-gray-500 text-center">
+        Prototype MVP of the Civil Commercial Court digital case management solution
+      </figcaption>
+    </figure>
+
+    <p>
+      I led a system-wide audit and discovery to assess opportunities for a digital Case Management solution across the Alberta Courts. Working as a solo service designer, I investigated the criminal, civil, appellate, and family courts to understand end-to-end workflows, pain points, and the organizational conditions required for successful change.
+    </p>
+    <p>
+      The engagement combined deep qualitative research—planning, preparing, and executing interviews with a broad spectrum of stakeholders from case workers to sitting justices—with extensive review of academic literature and precedents from other jurisdictions. Throughout, I maintained continuous liaison with stakeholders at all levels to build alignment, validate assumptions, and secure sponsorship.
+    </p>
+
+    <div>
+      <p className="font-medium text-gray-900">Key initiatives included:</p>
+      <ul className="list-disc list-inside space-y-1 text-gray-700">
+        <li>Identifying multiple opportunities for digital intervention across court types.</li>
+        <li>Scaffolding a proposal for a Civil Commercial Court solution within the Court of King’s Bench.</li>
+        <li>Assembling a lean, agile team to bootstrap a prototype/MVP and managing delivery over six months.</li>
+        <li>Defining and detailing an MVP and leading it through an agile delivery process.</li>
+        <li>Establishing ongoing stakeholder engagement and governance to de-risk adoption.</li>
+      </ul>
+    </div>
+
+    <p>
+      Outcome: we successfully delivered a beta case-management solution enabling counsel to schedule matters and submit documents entirely online, while providing the courts with fully digital case oversight and coordination. The result was a transformed, end-to-end experience—reducing administrative friction and laying the groundwork for scalable modernization.
+    </p>
+  </div>
                       ),
                     })
                   }
