@@ -164,22 +164,46 @@ export default function LandingPage() {
       </section>
 
       {/* About */}
-      <section id="about" className="bg-gray-50 border-b border-gray-100">
-        <div className="mx-auto max-w-6xl px-4 py-16 grid md:grid-cols-3 gap-10 items-start">
-          <div>
-            <h2 className="text-2xl md:text-3xl font-semibold">About</h2>
-            <img src="/IMG_6640-2.png" alt="Kevin Deevey portrait" className="mt-6 rounded-xl shadow-md" />
-          </div>
-          <div className="md:col-span-2 leading-relaxed space-y-4 text-gray-800">
-            <p>
-              I am a senior design leader, strategist, and product designer specializing in transforming complex challenges into simple, scalable, and high-impact digital experiences. With deep experience in <strong>design strategy</strong>, <strong>digital transformation</strong>, and <strong>product design leadership</strong>, I’ve led multi-year initiatives in healthcare, finance, and enterprise platforms—shaping product vision, aligning stakeholders, and delivering measurable results.
-            </p>
-            <p>
-              I excel where design must demonstrate strategic value—facilitating change management, driving cross-functional collaboration, and ensuring solutions are human-centered, business-aligned, and operationally feasible. Alongside leadership, I provide <strong>hands-on product design</strong> in UX, UI, and service design—bridging vision and delivery.
-            </p>
-          </div>
-        </div>
-      </section>
+<section id="about" className="bg-gray-50 border-b border-gray-100">
+  <div className="mx-auto max-w-6xl px-4 py-16">
+    {/* Heading spans full width, not in the grid */}
+    <h2 className="text-2xl md:text-3xl font-semibold">About</h2>
+
+    {/* Two-column content: image + text start at the same row */}
+    <div className="mt-6 grid md:grid-cols-3 gap-10 items-start">
+      {/* Image column */}
+      <div className="self-start">
+        <img
+          src="/IMG_6640-2.png"
+          alt="Kevin Deevey portrait"
+          className="block rounded-xl shadow-md -mt-[2px]"  
+        />
+      </div>
+
+      {/* Text column */}
+      <div className="md:col-span-2 self-start leading-relaxed text-gray-800">
+        <p>
+          I am a senior design leader, strategist, and product designer specializing in transforming
+          complex challenges into simple, scalable, and high-impact digital experiences. With deep
+          experience in <strong>design strategy</strong>, <strong>digital transformation</strong>, and
+          <strong> product design leadership</strong>, I’ve led multi-year initiatives in healthcare,
+          finance, and enterprise platforms—shaping product vision, aligning stakeholders, and
+          delivering measurable results.
+        </p>
+        <p className="mt-4">
+          I excel where design must demonstrate strategic value—facilitating change management,
+          driving cross-functional collaboration, and ensuring solutions are human-centered,
+          business-aligned, and operationally feasible. Alongside leadership, I provide
+          <strong> hands-on product design</strong> in UX, UI, and service design—bridging vision
+          and delivery.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
 
       {/* Services */}
       <section id="services" className="bg-white border-b border-gray-100">
