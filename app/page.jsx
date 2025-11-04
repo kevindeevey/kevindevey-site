@@ -14,7 +14,7 @@ function useEscToClose(cb) {
 }
 
 /* ---------- Contact Form ---------- */
-export function ContactForm() {
+function ContactForm() {
   const [status, setStatus] = useState({ state: 'idle', message: '' });
   const [form, setForm] = useState({ name: '', email: '', message: '', company: '' }); // company = honeypot
   const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
