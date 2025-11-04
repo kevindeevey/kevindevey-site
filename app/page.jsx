@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 
 
 
@@ -369,9 +370,31 @@ export default function LandingPage() {
                 </button>
               </div>
             </article>
+
+<div className="mt-10 text-left">
+  <Link
+    href="/healthcare"
+    className="inline-flex items-center gap-1 text-[14px] text-[var(--muted)] hover:text-[var(--ink)] transition-colors"
+  >
+    Detailed Healthcare Experience
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.5}
+      className="h-4 w-4 transition-transform group-hover:translate-x-1"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+    </svg>
+  </Link>
+</div>
+
           </div>
         </div>
+        
       </section>
+
 
       {/* Engagement Models */}
       <section id="engagement" className="bg-white border-b border-gray-100">
