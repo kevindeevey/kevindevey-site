@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -40,7 +41,7 @@ const projects: Project[] = [
     role: "Design Strategy Lead · Service & Product Design",
     description: [
       "From 2022 through 2025, led a multi-year service-design and UX transformation of MyActiveHealth (MAH) — CVS Health’s national wellness and benefits platform serving millions of members. The initiative modernized the experience, unified fragmented services, and aligned digital engagement with CVS Health’s strategic focus on behavioral health, accessibility, and member retention.",
-      "Working across multiple SAFe Agile digital trains;, Kevin directed a cross-functional design team through the delivery of an end-to-end behaviorally informed UX strategy and a comprehensive design-system overhaul. These efforts standardized the experience across employer, member, and coaching touchpoints, ensuring consistent design language, accessibility compliance, and scalability.",
+      "Working across multiple SAFe Agile digital trains, Kevin directed a cross-functional design team through the delivery of an end-to-end behaviorally informed UX strategy and a comprehensive design-system overhaul. These efforts standardized the experience across employer, member, and coaching touchpoints, ensuring consistent design language, accessibility compliance, and scalability.",
       "Through extensive discovery, journey mapping, and service blueprinting, Kevin and his team uncovered friction points in both the member journey and the service ecosystem. Iterative design and rapid validation cycles improved usability, deepened engagement, and helped the organization translate behavioral insights into measurable design outcomes.",
       "In parallel, Kevin displaced the incumbent vendor (Seamgen) and built a leaner, research-driven design team focused on accessibility, behavioral insight, and content strategy. He authored the Design Playbook, onboarding frameworks, and practice guides that formalized design operations across CVS Healthspire. Once design maturity was established, Kevin led the change-management transition from an external consulting model to a coached, fully internal CVS design team, ensuring continuity, capability transfer, and long-term sustainability.",
     ],
