@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 
 interface Project {
@@ -25,6 +25,10 @@ const THEME = {
   maxw: "max-w-6xl",
   radius: "rounded-2xl",
 };
+
+// Visible focus ring utility (WCAG 2.4.7 / 2.4.11)
+const FOCUS =
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black/70";
 
 const outcomes = [
   { title: "Clinician Confidence", text: "Reduced cognitive load and improved adherence to clinical protocols." },
@@ -130,10 +134,14 @@ const projects: Project[] = [
 export default function HealthcareExperiencePage() {
   const [lightbox, setLightbox] = useState<null | { src: string; alt: string }>(null);
 
+  // Track which button opened the lightbox, and the Close button inside the dialog
+  const openerRef = useRef<HTMLButtonElement | null>(null);
+  const closeBtnRef = useRef<HTMLButtonElement | null>(null);
+
   // ESC to close + lock body scroll while open
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setLightbox(null);
+      if (e.key === "Escape") closeLightbox();
     };
     if (lightbox) {
       document.addEventListener("keydown", onKey);
@@ -144,9 +152,46 @@ export default function HealthcareExperiencePage() {
     return () => document.removeEventListener("keydown", onKey);
   }, [lightbox]);
 
+  // Focus management: set initial focus to Close, trap focus inside, return to opener
+  useEffect(() => {
+    if (!lightbox) return;
+    // Move focus into the dialog
+    closeBtnRef.current?.focus();
+
+    const trap = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+      const dlg = document.getElementById("lightbox-dlg");
+      if (!dlg) return;
+      const focusables = dlg.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (!focusables.length) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+
+      if (e.shiftKey && active === first) {
+        e.preventDefault();
+        (last as HTMLElement).focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        (first as HTMLElement).focus();
+      }
+    };
+
+    document.addEventListener("keydown", trap);
+    return () => document.removeEventListener("keydown", trap);
+  }, [lightbox]);
+
+  const closeLightbox = () => {
+    setLightbox(null);
+    openerRef.current?.focus(); // return focus to the opener
+  };
+
   return (
-    <div
-      className="min-h-screen bg-white"
+    <main
+      id="main"
+      className="min-h-screen bg-white reduce-motion"
       style={{
         ["--ink" as any]: THEME.ink,
         ["--muted" as any]: THEME.muted,
@@ -155,36 +200,40 @@ export default function HealthcareExperiencePage() {
         ["--panel" as any]: THEME.panel,
       }}
     >
-      import Link from "next/link";
-
-{/* Hero */}
-<section className="relative">
-  <div className={`${THEME.maxw} mx-auto px-6 py-14 md:py-20`}>
-
-    {/* Back link */}
-    <nav className="mb-6 text-[13px] text-[var(--muted)]">
-      <Link
-        href="/"
-        className="hover:underline hover:text-[var(--ink)] transition-colors"
+      {/* Skip link for keyboard users */}
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded focus:bg-white focus:px-3 focus:py-2 focus:text-black shadow"
       >
-        ← Back to Main Page
-      </Link>
-    </nav>
+        Skip to main content
+      </a>
 
-    <p className="mb-3 text-[11px] md:text-xs uppercase tracking-[0.22em] text-[var(--muted)]">
-      Selected Work
-    </p>
-    <h1 className="text-[34px] leading-[1.15] md:text-[46px] font-semibold text-[var(--ink)]">
-      Healthcare Experience
-    </h1>
-    <p className="mt-4 max-w-2xl text-[15px] md:text-[17px] leading-relaxed text-[var(--muted)]">
-      A decade of shipping healthtech—from population-level analytics to
-      member engagement and clinician tools. Strategy to UI, grounded in
-      behavior change, accessibility, and measurable outcomes.
-    </p>
-  </div>
-</section>
+      {/* Hero */}
+      <section className="relative">
+        <div className={`${THEME.maxw} mx-auto px-6 py-14 md:py-20`}>
+          {/* Back link */}
+          <nav className="mb-6 text-[13px] text-[var(--muted)]">
+            <Link
+              href="/"
+              className={`${FOCUS} inline-flex items-center hover:underline hover:text-[var(--ink)] transition-colors`}
+            >
+              ← Back to Main Page
+            </Link>
+          </nav>
 
+          <p className="mb-3 text-[11px] md:text-xs uppercase tracking-[0.22em] text-[var(--muted)]">
+            Selected Work
+          </p>
+          <h1 className="text-[34px] leading-[1.15] md:text-[46px] font-semibold text-[var(--ink)]">
+            Healthcare Experience
+          </h1>
+          <p className="mt-4 max-w-2xl text-[15px] md:text-[17px] leading-relaxed text-[var(--muted)]">
+            A decade of shipping healthtech—from population-level analytics to
+            member engagement and clinician tools. Strategy to UI, grounded in
+            behavior change, accessibility, and measurable outcomes.
+          </p>
+        </div>
+      </section>
 
       {/* Outcomes */}
       <section className="border-y border-[var(--line)] bg-[var(--soft)]">
@@ -219,7 +268,7 @@ export default function HealthcareExperiencePage() {
                   <h3 className="text-[18px] md:text-[20px] font-semibold text-[var(--ink)] leading-tight">
                     {p.company}
                   </h3>
-                  <div className="h-[1px] bg-[var(--line)] my-2 w-12 opacity-70"></div>
+                  <div className="h-[1px] bg-[var(--line)] my-2 w-12 opacity-70" />
                   <p className="text-[14px] md:text-[15px] text-[var(--muted)] italic">{p.project}</p>
                   <div className="mt-1 text-[13px] text-[var(--muted)]">
                     {p.timeframe} · {p.role}
@@ -228,9 +277,13 @@ export default function HealthcareExperiencePage() {
 
                 <button
                   type="button"
-                  aria-label="Open image in lightbox"
-                  className="group block focus:outline-none"
-                  onClick={() => setLightbox({ src: p.image, alt: p.imageAlt })}
+                  aria-label="Open full image"
+                  aria-haspopup="dialog"
+                  className={`group block ${FOCUS}`}
+                  onClick={(e) => {
+                    openerRef.current = e.currentTarget as HTMLButtonElement;
+                    setLightbox({ src: p.image, alt: p.imageAlt });
+                  }}
                 >
                   <img
                     src={p.image}
@@ -243,9 +296,7 @@ export default function HealthcareExperiencePage() {
                 <div className="p-6">
                   <ul className="mt-1 flex flex-wrap gap-2 text-[11px] text-[var(--muted)]">
                     {p.tags.map((t) => (
-                      <li key={t} className={`${THEME.radius} border border-[var(--line)] px-2.5 py-1`}>
-                        {t}
-                      </li>
+                      <li key={t} className={`${THEME.radius} border border-[var(--line)] px-2.5 py-1`}>{t}</li>
                     ))}
                   </ul>
                   <div className="mt-4 space-y-3 text-[14px] leading-relaxed text-[var(--ink)]/90">
@@ -303,6 +354,11 @@ export default function HealthcareExperiencePage() {
             <p className="mt-1 max-w-2xl text-[13px] md:text-[14px] text-[var(--muted)]">
               I help product, clinical, and analytics teams ship meaningful outcomes—without adding complexity for members and clinicians.
             </p>
+            <p className="mt-4">
+              <Link href="/#contact" className={`${FOCUS} inline-flex items-center rounded-full border border-[var(--line)] px-4 py-2 text-sm hover:bg-[var(--soft)]`}>
+                Start a healthcare project
+              </Link>
+            </p>
           </div>
         </div>
       </section>
@@ -311,29 +367,47 @@ export default function HealthcareExperiencePage() {
         Built with accessibility, performance, and measurable outcomes in mind.
       </footer>
 
-      {/* Lightbox */}
+      {/* Lightbox (dialog) */}
       {lightbox && (
         <div
+          id="lightbox-dlg"
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
           role="dialog"
           aria-modal="true"
-          aria-label="Image lightbox"
-          onClick={() => setLightbox(null)}
+          aria-label="Image preview"
+          onClick={closeLightbox}
         >
           <div className="absolute inset-0" />
           <div className="relative max-h-[90vh] max-w-[95vw]" onClick={(e) => e.stopPropagation()}>
-            <img src={lightbox.src} alt={lightbox.alt} className="max-h-[90vh] max-w-[95vw] object-contain rounded-xl shadow-2xl" />
+            <img
+              src={lightbox.src}
+              alt={lightbox.alt}
+              className="max-h-[90vh] max-w-[95vw] object-contain rounded-xl shadow-2xl"
+            />
             <button
+              ref={closeBtnRef}
               type="button"
-              aria-label="Close lightbox"
-              className="absolute -top-3 -right-3 rounded-full bg-white/90 px-3 py-1 text-sm font-medium text-black shadow hover:bg-white"
-              onClick={() => setLightbox(null)}
+              aria-label="Close image preview"
+              className={`${FOCUS} absolute -top-3 -right-3 rounded-full bg-white/90 px-3 py-1 text-sm font-medium text-black shadow hover:bg-white`}
+              onClick={closeLightbox}
             >
               Close
             </button>
           </div>
         </div>
       )}
-    </div>
+
+      {/* Reduce motion helper */}
+      <style>{`
+  @media (prefers-reduced-motion: reduce) {
+    .reduce-motion * {
+      transition: none !important;
+      animation: none !important;
+      transform: none !important;
+    }
+  }
+`}</style>
+
+    </main>
   );
 }
