@@ -64,9 +64,9 @@ const projects: Project[] = [
       "Kevin led the UX and service-design effort for digital trains —a responsive analytics dashboard delivering real-time visibility into care-team performance. Using service blueprinting and collaborative workshops, he aligned clinicians, analysts, and field teams around new workflows that connected device data to measurable outcomes, enabling teams to monitor adherence, identify deviations, and intervene earlier in the care process.",
       "The resulting prototype unified clinical operations, data analytics, and end-user experience into a coherent digital ecosystem. The pilot was successfully incubated and advanced toward commercialization, with Edwards establishing a dedicated team to scale the solution into broader market deployment.",
     ],
-    image: "/images/health/alberta-thumb.png",
-    imageAlt: "Edwards service blueprint and interaction maps",
-    tags: ["Service Design", "Journey Mapping", "Blueprints"],
+    image: "/images/health/edwards_thumb.png",
+    imageAlt: "Edwards wireframes",
+    tags: ["Service Design", "Journey Mapping", "wireframes"],
   },
   {
     id: "vivante-dtx",
